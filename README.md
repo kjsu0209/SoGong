@@ -15,3 +15,17 @@ Sharpa
  flask init-db<br>
 4. 서버를 실행한다.(localhost:5000 port)<br>
  flask run
+디렉토리 구조
+-------
+1. flaskr : 라우팅 파일 디렉토리
+2. static : 정적 파일 디렉토리
+ - css
+ - images
+ - fonts
+ - js
+3. templates : view 파일 
+ - auth
+ - owner
+ - parker
+ - user
+ 
