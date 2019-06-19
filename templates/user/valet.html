@@ -128,7 +128,7 @@
               <div class="wow fadeInUp col-md-6 col-sm-12" data-wow-delay="0.6s">
                  <h1>Ask Valet</h1>
                  <div class="contact-form">
-                     <form id="contact-form" method="post" action="valet_pro.jsp">
+                     <form id="contact-form" method="post" action="/user/valet">
                          <input name="adr" type="text" class="form-control" placeholder="Address" required>
                          <p>Start Date: 
                            
@@ -224,10 +224,8 @@
                 요청 주소 : {{i[2]}}<br>
                 {%if i[3] == 0 %}
                 요청중입니다......
-                {%elif i[3] == 1 %}
-                발렛 매칭되었습니다...
                 {%else%}
-                완료된 요청입니다....
+                매칭 완료....
                 {%endif%}
                 </div>
                 </div>

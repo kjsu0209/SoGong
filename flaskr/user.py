@@ -27,7 +27,7 @@ def find():
         "SELECT Adr, Price FROM PARKING_PLACE"
     ).fetchall()
 
-    return render_template('find.html', rent_history= rent_history, place=place)
+    return render_template('/user/find.html', rent_history= rent_history, place=place)
 
 @bp.route('/find', methods=['POST'])
 def find_pro():
@@ -79,7 +79,7 @@ def valet():
     db = get_db()
     #발렛 이용기록 가져오기
     valet_history = db.execute(
-        "select Sdate, Edate, Place_id, status_now FROM Valet WHERE User_id = '" + session['user_id']+"'"
+        "select Sdate, Edate, pickup, status_now FROM Valet WHERE User_id = '" + session['user_id']+"'"
         ).fetchall()
     return render_template('/user/valet.html', valet_history=valet_history)
 
@@ -88,17 +88,16 @@ def valet_ask():
     #파라미터 가져오기
     ID = session['user_id']
     adr = request.form['adr']
-    price = request.form['price']
     smonth= request.form['smonth']
     sday= request.form['sday']
+    shour= request.form['shour']
     smin= request.form['smin']
-    eyear= request.form['eyear']
     emonth= request.form['emonth']
     eday= request.form['eday']
     ehour= request.form['ehour']
     emin= request.form['emin']
-    sdate= syear+'-'+smonth+'-'+sday+' '+shour+":"+smin+":00"
-    edate= eyear+'-'+emonth+'-'+eday+' '+ehour+":"+emin+":00"
+    sdate= smonth+'-'+sday+' '+shour+":"+smin+":00"
+    edate= emonth+'-'+eday+' '+ehour+":"+emin+":00"
     db = get_db()
     #대여번호 받기
     rent_list = db.execute(
@@ -111,10 +110,18 @@ def valet_ask():
 
     #대여 정보 넣기
     db.execute(
-       "INSERT INTO VALET VALUES ("+str(shanum)+", '"+sdate+"','"+edate+"', '"+ID+"', '"+owner+"', '"+str(place)+"', 0, 0, 0)"
+       "INSERT INTO VALET VALUES ("+str(shanum)+", '"+sdate+"','"+edate+"', '"+ID+"', 'none', '"+str(adr)+"', 0, 0, 0)"
     )
     db.commit()
     return redirect(url_for('user.home'))
+
+@bp.route('/user_info', methods=['GET'])
+def info():
+    db = get_db()
+    valet_history = db.execute(
+        "select id, name, phone, age FROM USER_sp WHERE id = '" + session['user_id']+"'"
+        ).fetchone()
+    return render_template('/user/info.html', user=valet_history)
 
 
 def login_required(view):

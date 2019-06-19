@@ -79,9 +79,9 @@
                     <div class="intro-inner">
                       <ul id="nav-menu">
                         <li><a href="/main">Home</a></li>
-                            <li><a href="/user/home">User</a></li>
-                            <li><a href="/parker/valet">Parker</a></li>
-                            <li><a href="/add_place">Owner</a></li>
+                            <li><a href="user.jsp">User</a></li>
+                            <li><a href="parker.jsp">Parker</a></li>
+                            <li><a href="add_place.jsp">Owner</a></li>
                       </ul>
                     </div>
                   </div>
@@ -117,64 +117,29 @@
 
 <!-- Portfolio section
 ================================================== -->
-<section id="portfolio">
-   <div class="container">
-      <div class="row">
 
-         <div class="col-md-12 col-sm-12">
-            
-               <!-- iso section -->
-               <div class="iso-section wow fadeInUp" data-wow-delay="0.6s">
-                        <!-- iso box section -->
-                        <div class="iso-box-section wow fadeInUp" data-wow-delay="0.3s">
-                           <div class="iso-box-wrapper col4-iso-box">
-
-                              <div class="iso-box photoshop branding col-md-4 col-sm-6">
-                                 <div class="portfolio-thumb">
-                                    <img src="../static/images/portfolio-img1.jpg" class="img-responsive" alt="Portfolio">
-                                       <div class="portfolio-overlay">
-                                          <div class="portfolio-item">
-                                                <a href="/user/home"><i class="fa fa-link"></i></a>
-                                                <h2>사용자</h2>
-                                             </div>
-                                       </div>
-                                 </div>
-                              </div>
-
-                              <div class="iso-box graphic template col-md-4 col-sm-6">
-                                 <div class="portfolio-thumb">
-                                    <img src="../static/images/portfolio-img2.jpg" class="img-responsive" alt="Portfolio">
-                                       <div class="portfolio-overlay">
-                                          <div class="portfolio-item">
-                                                <a href="/parker/valet"><i class="fa fa-link"></i></a>
-                                                <h2>주차자</h2>
-                                             </div>
-                                       </div>
-                                 </div>
-                              </div>
-
-                              <div class="iso-box template graphic col-md-4 col-sm-6">
-                                 <div class="portfolio-thumb">
-                                    <img src="../static/images/portfolio-img3.jpg" class="img-responsive" alt="Portfolio">
-                                       <div class="portfolio-overlay">
-                                          <div class="portfolio-item">
-                                                <a href="/owner"><i class="fa fa-link"></i></a>
-                                                <h2>공유자</h2>
-                                             </div>
-                                       </div>
-                                 </div>
-                              </div>
-                            </div>
-                        </div>
-
-               </div>
-
-         </div>
-
-      </div>
-   </div>
-</section>
-
+<!-- Portfolio section
+================================================== -->
+<section id="contact">
+        <div class="container">
+           <div class="row">
+             <h1>User Info</h1>
+                 <div class="contact-form">
+                     <form id="contact-form" method="post" action="edit_user_pro.jsp">
+                         <b>ID: </b>{{ user[0]}}<br>
+                         <b>NAME: </b>{{ user[1]}}<br>
+                         <b>PHONE: </b>{{ user[2]}}<br>
+                         <b>AGE: </b>{{ user[3]}}<br>
+     
+                     </form>
+                 </div>
+              
+             <div class="clearfix"></div>
+     
+                 
+           </div>
+        </div>
+     </section>
 <!-- Footer section
 ================================================== -->
 <footer>
