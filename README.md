@@ -14,7 +14,7 @@ Sharpa
 3. 데이터베이스를 초기화한다<br>
  flask init-db<br>
 4. 서버를 실행한다.(localhost:5000 port)<br>
- flask run
+ flask run<br>
 디렉토리 구조
 -------
 1. flaskr : 라우팅 파일 디렉토리
