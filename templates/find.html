@@ -1,0 +1,231 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+  	<style>
+.left-box {
+  float: left;
+  width: 50%;
+}
+.right-box {
+  float: right;
+  width: 50%;
+}
+</style>
+  </head>
+  <body onload="initialize()">
+
+    <a href="/main"><h3>셰르파</h3></a>
+    <!--The div element for the map -->
+    <div class="left-box">
+    <div id="map" style="width: 95%; height: 500px;"></div>
+     <div>
+       <input id="address" type="textbox" value="Kyungpook National University">
+       <input type="button" value="검색" onclick="codeAddress()">
+     </div>
+     </div>
+     <form class="right-box" method="post" action="/user/find">
+        <p>Address: <input name="adr" type="text" class="form-control" value="Address" id="slted_adr" size="40" readonly/></p>
+        <p>Price: <input name="price" type="text" class="form-control" value="Price" id="slted_prc" size="7" readonly/> per hour</p>
+        <p>Start Date: 
+                    <select name="syear" style="width:70px;">
+                        {%for i in range(1990, 2019):
+                            %}<option value='{{i}}'>{{i}}</option>{%
+                        endfor%}
+                    </select>
+                    <select name="smonth" style="width:50px;">
+                        <option>month</option>								
+
+                        {%for i in range(1, 13):
+                            %}<option value='{{i}}'>{{i}}</option>{%
+                        endfor%}
+                    </select>
+                    <select name="sday" style="width:50px;">
+                    <option>day</option>		
+                        {%for i in range(1, 32):
+                            %}<option value='{{i}}'>{{i}}</option>{%
+                        endfor%}
+                    </select>
+                    <select name="shour" style="width:50px;">
+                    <option>hour</option>			
+
+                        {%for i in range(0, 24):%}
+                            {% if i<10
+                            %}<option value='{{i}}'>0{{i}}</option>{%
+                            else:
+                            %}<option value='{{i}}'>{{i}}</option>{%
+                            endif%}
+                        {%endfor%}
+                    </select>
+                    <b> : </b>
+                    <select name="smin" style="width:50px;">
+                    <option>min</option>		
+                    
+                        {%for i in range(0, 61):
+                            %}<option value='{{i}}'>{{i}}</option>{%
+                        endfor%}
+                    </select>
+                    <b> ~ </b></p>
+                    <p>End Date: 
+                    <select name="eyear" style="width:70px;">
+                        {%for i in range(1990, 2019):
+                            %}<option value='{{i}}'>{{i}}</option>{%
+                        endfor%}
+                    </select>
+                    <select name="emonth" style="width:50px;">	
+                    <option>month</option>									
+                    {%for i in range(1, 13):
+                        %}<option value='{{i}}'>{{i}}</option>{%
+                    endfor%}
+                    </select>
+                    <select name="eday" style="width:50px;">
+                    <option>day</option>		
+                    {%for i in range(1, 32):
+                        %}<option value='{{i}}'>{{i}}</option>{%
+                    endfor%}
+                    </select>
+                    <select name="ehour" style="width:50px;">
+                    <option>hour</option>		
+                        
+                    {%for i in range(0, 24):%}
+                    {% if i<10
+                    %}<option value='{{i}}'>0{{i}}</option>{%
+                    else:
+                    %}<option value='{{i}}'>{{i}}</option>{%
+                    endif%}
+                    {%endfor%}
+                    </select>
+                    <b> : </b>
+                    <select name="emin" style="width:50px;">
+                    <option>min</option>		
+                        
+                    {%for i in range(0, 61):
+                        %}<option value='{{i}}'>{{i}}</option>{%
+                    endfor%}
+                    </select></p>
+								
+					
+					<div class="contact-submit">
+						<input type="submit" class="form-control submit" value="Ask Sharing">
+					</div>
+    <div class="bag" style="overflow: auto; height: 300px;">
+     <div class="row">
+         <div class="wow fadeInUp col-md-6 col-sm-12" data-wow-delay="0.6s">
+            <h2>나의 렌트 기록</h2>
+            <div class="bag_content" style="border-bottom: 1px solid gray; max-height: 400px;">
+
+                {% if rent_history %}
+                {%
+                for i in rent_history:
+                %}
+                <div class ="bag_item">
+                    <strong>렌트 시작 : {{ i[0] }}</strong><br>
+                    렌트 종료 :  {{ i[1] }}<br>
+                    렌트 주차장 고유 번호 : {{ i[2] }}
+                </div>
+
+                {% endfor %}
+                {% endif%}
+            </div>
+        </div>
+     </div>
+    </div>
+</form>
+
+    <script>
+     var geocoder;
+      var map;
+      function initialize() {
+        var lat, long;
+        if (navigator.geolocation) { // GPS를 지원하면
+            navigator.geolocation.getCurrentPosition(function(position) {
+            lat = position.coords.latitude;
+            long = position.coords.longitude;
+            var latlng = new google.maps.LatLng(lat, long);
+            geocoder = new google.maps.Geocoder();
+            var mapOptions = {
+            zoom: 15,
+            center: latlng
+            }
+            map = new google.maps.Map(document.getElementById('map'), mapOptions);
+            {% for addr in place %}
+                geocoder.geocode( { 'address': '{{addr.Adr}}'}, function(results, status) {
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location
+                    });
+                    marker.addListener('click', function() {
+                        map.setZoom(15);
+                        map.setCenter(marker.getPosition());
+                        
+                        document.getElementById('slted_adr').setAttribute('value', '{{addr.Adr}}');
+                        document.getElementById('slted_prc').setAttribute('value', '{{addr.price}}');
+                        });
+                    marker.setMap(map);
+                });
+            {% endfor %}
+            }, function(error) {
+            console.error(error);
+            }, {
+            enableHighAccuracy: false,
+            maximumAge: 0,
+            timeout: Infinity
+            });
+        } else {
+            var latlng = new google.maps.LatLng(36, 122);
+            geocoder = new google.maps.Geocoder();
+            var mapOptions = {
+            zoom: 15,
+            center: latlng
+            }
+            map = new google.maps.Map(document.getElementById('map'), mapOptions);
+            alert('GPS를 지원하지 않습니다');
+            {% for addr in place %}
+                geocoder.geocode( { 'address': '{{addr.Adr}}'}, function(results, status) {
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location
+                    });
+                    marker.addListener('click', function() {
+                        map.setZoom(15);
+                        map.setCenter(marker.getPosition());
+                        
+                        document.getElementById('slted_adr').setAttribute('value', '{{addr.Adr}}');
+                        document.getElementById('slted_prc').setAttribute('value', '{{addr.price}}');
+                        });
+                    marker.setMap(map);
+                });
+            {% endfor %}
+        }
+        
+        
+    }
+		
+    function codeAddress() {
+    var address = document.getElementById('address').value;
+    geocoder.geocode( { 'address': address}, function(results, status) {
+        if (status == 'OK') {
+        map.setCenter(results[0].geometry.location);
+        map.setZoom(15);
+
+        } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+        }
+    });
+    }
+   
+    </script>
+    
+    <!--Load the API from the specified URL
+    * The async attribute allows the browser to render the page while the API loads
+    * The key parameter will contain your own API key (which is not needed for this tutorial)
+    * The callback parameter executes the initMap() function
+    -->
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDo0z4silmqtMa9u2fI-voaTSotTF6PKVk&callback=initMap">
+    </script>
+  </body>
+
+
+</html> 
